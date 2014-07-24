@@ -1,0 +1,9 @@
+C:\Users\Admin\documents\visual studio 2013\Projects\SWGEmuProxy\SWGEmuProxy\bin\Release\SWGEmuProxy.exe.config
+C:\Users\Admin\documents\visual studio 2013\Projects\SWGEmuProxy\SWGEmuProxy\bin\Release\SWGEmuProxy.exe
+C:\Users\Admin\documents\visual studio 2013\Projects\SWGEmuProxy\SWGEmuProxy\bin\Release\SWGEmuProxy.pdb
+C:\Users\Admin\documents\visual studio 2013\Projects\SWGEmuProxy\SWGEmuProxy\bin\Release\zlib.net.dll
+C:\Users\Admin\documents\visual studio 2013\Projects\SWGEmuProxy\SWGEmuProxy\obj\Release\SWGEmuProxy.Properties.Resources.resources
+C:\Users\Admin\documents\visual studio 2013\Projects\SWGEmuProxy\SWGEmuProxy\obj\Release\SWGEmuProxy.csproj.GenerateResource.Cache
+C:\Users\Admin\documents\visual studio 2013\Projects\SWGEmuProxy\SWGEmuProxy\obj\Release\SWGEmuProxy.exe
+C:\Users\Admin\documents\visual studio 2013\Projects\SWGEmuProxy\SWGEmuProxy\obj\Release\SWGEmuProxy.pdb
+C:\Users\Admin\documents\visual studio 2013\Projects\SWGEmuProxy\SWGEmuProxy\obj\Release\SWGEmuProxy.csprojResolveAssemblyReference.cache
