@@ -46,7 +46,6 @@ namespace SWGProxy.Utilities
 			for (int i = 0; i < buffer.Length; i++) WriteByte(buffer[i]);
 		}
 
-
 		public void writeInt(int data)
 		{
 			byte[] buffer = BitConverter.GetBytes(data);
@@ -85,25 +84,27 @@ namespace SWGProxy.Utilities
 			writeByteArray(System.Text.Encoding.Unicode.GetBytes(data));
 		}
 
+		// [Todo] Test
 		public short getSOEOpcode()
 		{
-			return BitConverter.ToInt16(new byte[] { data[1], data[0] }, 0);
+			return BitConverter.ToInt16(new byte[] { data[0], data[1] }, 0);
 		}
 
-		// Should probably change this so that it makes sure packet is currently in a decrypted state
+		// [Todo] Test
 		public short getSequence()
 		{
-			return BitConverter.ToInt16(new byte[] { data[3], data[2] }, 0);
+			if (!xorModified) xorData();
+			return BitConverter.ToInt16(new byte[] { data[2], data[3] }, 0);
 		}
 
-		// Should probably change this so that it makes sure packet is currently in a decrypted state
+		// [Todo] Test
 		public uint getSWGOpcode()
 		{
-			return BitConverter.ToUInt32(new byte[] { data[12], data[11], data[10], data[9] }, 0);
+			if (!xorModified) xorData();
+			return BitConverter.ToUInt32(new byte[] { data[9], data[10], data[11], data[12] }, 0);
 		}
 
-		// 5:36 PM - Light: it goes like this append crc -> encrypt -> compress
-		// @TODO: this
+		// [Done]
 		public byte[] getFinalizedPacket()
 		{
 			if (xorModified)
@@ -111,28 +112,54 @@ namespace SWGProxy.Utilities
 				WriteByte(0);
 				xorData();
 				// Don't touch below line or you will DIE!!
-				writeByteArray(BitConverter.GetBytes( (short)(MessageCRC.GenerateCrc(data.ToArray(), MessageCRC.ParseNetByteInt(Program.session.xorKey)) << 16 >> 16)).Reverse().ToArray());
+				writeByteArray(BitConverter.GetBytes( (short)(MessageCRC.GenerateCrc(data.ToArray(), MessageCRC.ParseNetByteInt(Program.session.crcSeed)) << 16 >> 16)).Reverse().ToArray());
 			}
 
 			return data.ToArray();
 		}
 
-		// Should probably change this so that it makes sure packet is currently in a decrypted state
+		// [Todo] Test
 		public byte[] getSWGPacket()
 		{
-			byte[] temp = new byte[data.Count - 9 - 3]; // Size = SOEWrapper - CompressionFlags
+			if (!xorModified) xorData();
+
+			byte[] temp = new byte[data.Count - 6 - 3]; // Size = (SOEWrapper(9) - Footer(3))
 			for(int i = 0; i < temp.Length; i++)
 			{
-				temp[i] = data[9 + i]; // Skip SOE Wrapper
+				temp[i] = data[6 + i]; // Skip SOE Wrapper
 			}
 			return temp;
+		}
+
+		public void AnalyzePacket()
+		{
+			if (!xorModified) xorData();
+			byte[] temp = getSWGPacket();
+			int pos = 0;
+			int packets = 0;
+
+			while(pos < temp.Length)
+			{
+				byte length = temp[pos++];
+				if (length == 0) break;
+				pos += 2; // skip operand
+				Console.WriteLine("[PacketAnalyzer] Packet found: {0:X}",BitConverter.ToUInt32(new byte[] { temp[pos], temp[pos + 1], temp[pos + 2], temp[pos + 3] }, 0));
+				pos += 4; // skip opcode
+
+				for(int i = 0; i + 6 < length; i++)
+				{
+					pos++;
+				}
+				packets++;
+			}
+			Console.WriteLine("[PacketAnalyzer] {0} packets found", packets);
 		}
 
 		// [Done]
 		public void xorData()
 		{
 			List<byte> newData = new List<byte>();
-			uint mask = BitConverter.ToUInt32(Program.session.xorKey, 0);
+			uint mask = BitConverter.ToUInt32(Program.session.crcSeed, 0);
 
 			// If we haven't decrypted packet already, we should ommit the footer
 			int blockCount = xorModified ? (data.Count - 2) / 4 : (data.Count - 5) / 4;
@@ -171,7 +198,7 @@ namespace SWGProxy.Utilities
 			{
 				avail_in = 0
 			};
-			zStream.deflateInit(1);
+			zStream.deflateInit(6);
 			zStream.next_in = numArray;
 			zStream.next_in_index = 2;
 			zStream.avail_in = (int)numArray.Length - 4;

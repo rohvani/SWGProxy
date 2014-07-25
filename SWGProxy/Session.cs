@@ -8,13 +8,11 @@ namespace SWGProxy
 {
 	public class Session
 	{
-		public byte[] xorKey;
-		public byte[] zlibFlags;
+		public byte[] crcSeed;
 
-		public Session(byte[] xorKey, byte[] zlibFlags)
+		public Session(byte[] crcSeed)
 		{
-			this.xorKey = xorKey;
-			this.zlibFlags = zlibFlags;
+			this.crcSeed = crcSeed;
 		}
 	}
 }

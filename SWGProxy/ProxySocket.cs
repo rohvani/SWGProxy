@@ -47,42 +47,45 @@ namespace SWGProxy
 				udpSock.BeginReceiveFrom(buffer, 0, buffer.Length, SocketFlags.None, ref newClientEP, DoReceiveFrom, udpSock);
 
 				// Handle the received message
-				Console.WriteLine("Recieved {0} bytes from {1}:{2}", msgLen,  ((IPEndPoint)clientEP).Address, ((IPEndPoint)clientEP).Port);
+				//Console.WriteLine("Recieved {0} bytes from {1}:{2}", msgLen,  ((IPEndPoint)clientEP).Address, ((IPEndPoint)clientEP).Port);
 
 				// Found our client
 				if (origin == null || (origin.Port != ((IPEndPoint)clientEP).Port) && ((IPEndPoint)clientEP).Address.Equals(origin.Address))
 				{
-					if (origin != null) Console.WriteLine("Found new client, did the old one get disconnected?");
-					else Console.WriteLine("Found new client");
+					if (origin != null) Console.WriteLine("[Info] Found new client, did the old one get disconnected?");
+					else Console.WriteLine("[Info] Found new client");
 					origin = (IPEndPoint)clientEP;
 				}
 
 				// Message is C -> S
 				if(((IPEndPoint)clientEP).Address.Equals(origin.Address))
 				{
-					Console.WriteLine("Forwarding packet to server");
+					//Console.WriteLine("Forwarding packet to server");
 					udpSock.SendTo(localMsg, destination);
 				}
 				// Message is S -> C
 				else 
 				{
-					Console.WriteLine("Forwarding packet to client");
+					//Console.WriteLine("Forwarding packet to client");
 
-					if (localMsg[1] == 0x02) // SOE_SESSION_REPLY
+					switch(localMsg[1]) 
 					{
-						byte[] xorKey = new byte[4];
-						byte[] zlibFlags = new byte[3];
+						case 2: // SOE_SESSION_REPLY
+							byte[] crcSeed = new byte[4];
+							Array.Copy(localMsg, 6, crcSeed, 0, 4);
+							Program.session = new Session(crcSeed);
+							break;
 
-						Array.Copy(localMsg, 6, xorKey, 0, 4);
-						Program.session = new Session(xorKey, null);
+						case 9: // SOE_CHL_DATA_A
+							PacketStream packet = new PacketStream(localMsg.ToArray());
+							packet.xorData();
+							packet.AnalyzePacket();
+							localMsg = packet.getFinalizedPacket();
+							break;
 
-
-					}
-					else if (localMsg[1] == 0x09) // SOE_CHL_DATA_A
-					{
-						PacketStream packet = new PacketStream(localMsg.ToArray());
-						packet.xorData();
-						localMsg = packet.getFinalizedPacket();
+						default:
+							Console.WriteLine("[Debug] Unknown SOE opcode: {0}", localMsg[1]);
+							break;
 					}
 
 					udpSock.SendTo(localMsg, origin);
@@ -90,6 +93,7 @@ namespace SWGProxy
 			}
 			catch (Exception ex) 
 			{
+				// Got an exception some how, lets not fuck up chance for future clients
 				EndPoint newClientEP = new IPEndPoint(IPAddress.Any, 0);
 				udpSock.BeginReceiveFrom(buffer, 0, buffer.Length, SocketFlags.None, ref newClientEP, DoReceiveFrom, udpSock);
 			}

@@ -8,3 +8,12 @@ C:\Users\Admin\Documents\Visual Studio 2013\Projects\SWGEmuProxy\SWGEmuProxy\obj
 C:\Users\Admin\Documents\Visual Studio 2013\Projects\SWGEmuProxy\SWGEmuProxy\obj\Release\SWGEmuProxy.pdb
 C:\Users\Admin\Documents\Visual Studio 2013\Projects\SWGEmuProxy\SWGEmuProxy\bin\Release\SWGProxy.exe.config
 C:\Users\Admin\Documents\Visual Studio 2013\Projects\SWGEmuProxy\SWGProxy\bin\Release\SWGProxy.exe.config
+C:\Users\Admin\Documents\GitHub\SWGProxy\SWGProxy\bin\Release\SWGProxy.exe.config
+C:\Users\Admin\Documents\GitHub\SWGProxy\SWGProxy\obj\Release\SWGProxy.csprojResolveAssemblyReference.cache
+C:\Users\Admin\Documents\GitHub\SWGProxy\SWGProxy\obj\Release\SWGProxy.Properties.Resources.resources
+C:\Users\Admin\Documents\GitHub\SWGProxy\SWGProxy\obj\Release\SWGProxy.csproj.GenerateResource.Cache
+C:\Users\Admin\Documents\GitHub\SWGProxy\SWGProxy\bin\Release\SWGProxy.exe
+C:\Users\Admin\Documents\GitHub\SWGProxy\SWGProxy\bin\Release\SWGProxy.pdb
+C:\Users\Admin\Documents\GitHub\SWGProxy\SWGProxy\bin\Release\zlib.net.dll
+C:\Users\Admin\Documents\GitHub\SWGProxy\SWGProxy\obj\Release\SWGProxy.exe
+C:\Users\Admin\Documents\GitHub\SWGProxy\SWGProxy\obj\Release\SWGProxy.pdb
