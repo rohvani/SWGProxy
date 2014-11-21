@@ -1,5 +1,6 @@
 ﻿using ComponentAce.Compression.Libs.zlib;
 using SWGProxy;
+using SWGProxy.Packets;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -140,12 +141,20 @@ namespace SWGProxy.Utilities
 
 			while(pos < temp.Length)
 			{
-				byte length = temp[pos++];
+				byte length = temp[pos++]; // read length and move onto operand
 				if (length == 0) break;
 				pos += 2; // skip operand
-				Console.WriteLine("[PacketAnalyzer] Packet found: {0:X}",BitConverter.ToUInt32(new byte[] { temp[pos], temp[pos + 1], temp[pos + 2], temp[pos + 3] }, 0));
+				UInt32 opcode = BitConverter.ToUInt32(new byte[] { temp[pos], temp[pos + 1], temp[pos + 2], temp[pos + 3]}, 0);
+				Console.WriteLine("[PacketAnalyzer] Packet found: {0:X}",opcode);
 				pos += 4; // skip opcode
 
+				if (string.Format("{0:X}", opcode) == "3436AEB6")
+				{
+					Console.WriteLine("test");
+					byte[] testBuffer = new byte[length];
+					for (int i = 0; i < length; i++) testBuffer[i] = temp[pos - 4 + i]; 
+					LoginClusterStatus test = new LoginClusterStatus(testBuffer);
+				}
 				for(int i = 0; i + 6 < length; i++)
 				{
 					pos++;

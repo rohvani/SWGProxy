@@ -56,8 +56,14 @@
     <Compile Include="MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Packets\GenericPacket.cs" />
+    <Compile Include="Packets\LoginClusterStatus.cs" />
+    <Compile Include="Packets\SWGPacket.cs" />
     <Compile Include="Utilities\MessageCRC.cs" />
-    <Compile Include="Utilities\PacketStream.cs" />
+    <Compile Include="Utilities\Packet.cs" />
+    <Compile Include="Utilities\PacketReader.cs" />
+    <Compile Include="Utilities\PacketWriter.cs" />
+    <Compile Include="Utilities\Old\PacketStream.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ProxySocket.cs" />

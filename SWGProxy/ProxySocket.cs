@@ -32,8 +32,8 @@ namespace SWGProxy
 
 		private void DoReceiveFrom(IAsyncResult iar)
 		{
-			try
-			{
+			//try
+			//{
 				//Get the received message.
 				Socket recvSock = (Socket)iar.AsyncState;
 				EndPoint clientEP = new IPEndPoint(IPAddress.Any, 0);
@@ -80,7 +80,9 @@ namespace SWGProxy
 							PacketStream packet = new PacketStream(localMsg.ToArray());
 							packet.xorData();
 							packet.AnalyzePacket();
+							byte[] temp = localMsg.ToArray();
 							localMsg = packet.getFinalizedPacket();
+							Console.WriteLine("[Debug] Packet " + (temp.SequenceEqual(localMsg) ? "succesfully" : "unsuccessfully") + " rebuilt");
 							break;
 
 						default:
@@ -90,13 +92,13 @@ namespace SWGProxy
 
 					udpSock.SendTo(localMsg, origin);
 				}
-			}
+			/*}
 			catch (Exception ex) 
 			{
 				// Got an exception some how, lets not fuck up chance for future clients
 				EndPoint newClientEP = new IPEndPoint(IPAddress.Any, 0);
 				udpSock.BeginReceiveFrom(buffer, 0, buffer.Length, SocketFlags.None, ref newClientEP, DoReceiveFrom, udpSock);
-			}
+			}*/
 		}
 	}
 }

@@ -20,8 +20,8 @@ namespace SWGProxy
 			ProxySocket login = new ProxySocket(44453);
 			ProxySocket zone = new ProxySocket(44463);
 
-			login.destination = new IPEndPoint(IPAddress.Parse("173.255.138.49"), 44453);
-			zone.destination = new IPEndPoint(IPAddress.Parse("50.97.160.122"), 44463);
+			login.destination = new IPEndPoint(IPAddress.Parse("23.235.226.194"), 44453);
+			zone.destination = new IPEndPoint(IPAddress.Parse("23.235.226.194"), 44463);
 
 			Application.EnableVisualStyles();
 			Application.SetCompatibleTextRenderingDefault(false);

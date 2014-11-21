@@ -1,0 +1,8 @@
+C:\Users\admin\Documents\GitHub\SWGProxy\SWGProxy\bin\Debug\SWGProxy.exe.config
+C:\Users\admin\Documents\GitHub\SWGProxy\SWGProxy\bin\Debug\SWGProxy.exe
+C:\Users\admin\Documents\GitHub\SWGProxy\SWGProxy\bin\Debug\SWGProxy.pdb
+C:\Users\admin\Documents\GitHub\SWGProxy\SWGProxy\bin\Debug\zlib.net.dll
+C:\Users\admin\Documents\GitHub\SWGProxy\SWGProxy\obj\Debug\SWGProxy.Properties.Resources.resources
+C:\Users\admin\Documents\GitHub\SWGProxy\SWGProxy\obj\Debug\SWGProxy.csproj.GenerateResource.Cache
+C:\Users\admin\Documents\GitHub\SWGProxy\SWGProxy\obj\Debug\SWGProxy.exe
+C:\Users\admin\Documents\GitHub\SWGProxy\SWGProxy\obj\Debug\SWGProxy.pdb
