@@ -60,7 +60,8 @@
     <Compile Include="Packets\LoginClusterStatus.cs" />
     <Compile Include="Packets\SWGPacket.cs" />
     <Compile Include="Utilities\MessageCRC.cs" />
-    <Compile Include="Utilities\SOEPacket.cs" />
+    <Compile Include="Packets\SOEPacket.cs" />
+    <Compile Include="Utilities\PacketLookup.cs" />
     <Compile Include="Utilities\PacketReader.cs" />
     <Compile Include="Utilities\PacketWriter.cs" />
     <Compile Include="Utilities\Old\PacketStream.cs" />

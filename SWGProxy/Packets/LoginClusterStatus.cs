@@ -9,6 +9,7 @@ namespace SWGProxy.Packets
 {
 	public class LoginClusterStatus : SWGPacket
 	{
+		short operand = 0;
 		int opcode = 0;
 		List<GameServer> gameServers = new List<GameServer>();
 
@@ -20,6 +21,7 @@ namespace SWGProxy.Packets
 		public LoginClusterStatus(byte[] original)
 		{
 			PacketReader reader = new PacketReader(original);
+			operand = reader.ReadShort();
 			opcode = reader.ReadInt();
 			int serverCount = reader.ReadInt();
 			for(int i = 0; i < serverCount; i++)
@@ -36,8 +38,6 @@ namespace SWGProxy.Packets
 				server.Status = reader.ReadInt();
 				server.Recommended = reader.ReadByte();
 				gameServers.Add(server);
-
-				Console.WriteLine(server.IPAddress);
 			}
 		}
 
@@ -47,6 +47,7 @@ namespace SWGProxy.Packets
 			PacketWriter writer = new PacketWriter();
 
 			// Build packet
+			writer.writeShort(operand);
 			writer.writeInt(opcode);
 			writer.writeInt(gameServers.Count);
 			foreach(GameServer server in gameServers)

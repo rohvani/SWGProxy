@@ -52,6 +52,15 @@ namespace SWGProxy.Utilities
 			return BitConverter.ToInt32(buffer, 0);
 		}
 
+		public uint ReadUInt()
+		{
+			byte[] buffer = new byte[4];
+			data.CopyTo(Position, buffer, 0, buffer.Length);
+			buffer.Reverse();
+			Position += buffer.Length;
+			return BitConverter.ToUInt32(buffer, 0);
+		}
+
 		public long ReadLong()
 		{
 			byte[] buffer = new byte[8];
@@ -81,8 +90,7 @@ namespace SWGProxy.Utilities
 
 		public string ReadUnicode()
 		{
-			throw new Exception("ReadUnicode() is not implemented.");
-			return null;
+			throw new Exception("ReadUnicode is not implemented.");
 		}
 		
 	}

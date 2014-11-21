@@ -12,5 +12,12 @@ namespace Utilities
 		{
 			Console.WriteLine(BitConverter.ToString(data).Replace('-', ' '));
 		}
+
+		public static void Print(string text, ConsoleColor color)
+		{
+			Console.ForegroundColor = color;
+			Console.WriteLine(text);
+			Console.ResetColor();
+		}
 	}
 }

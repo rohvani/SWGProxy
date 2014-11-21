@@ -1,4 +1,5 @@
 ﻿using SWGProxy.Packets;
+using SWGProxy.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Utilities;
 
-namespace SWGProxy.Utilities
+namespace SWGProxy.Packets
 {
 	public class SOEPacket
 	{
@@ -16,10 +17,12 @@ namespace SWGProxy.Utilities
 		private short Multi = 0;
 		private bool UseCompression = false;
 		#endregion
+		#region Private Variables
 		private List<SWGPacket> childPackets = new List<SWGPacket>();
+		#endregion
 
+		#region Constructors
 		public SOEPacket() { }
-
 		public SOEPacket(byte[] data)
 		{
 			// Begin reading of SOE packet
@@ -37,16 +40,15 @@ namespace SWGProxy.Utilities
 				int length = swgReader.ReadByte();
 				if (length == 0) break;
 
-				byte[] temp = swgReader.ReadByteArray(length);
-				GenericPacket packet = new GenericPacket(temp);
-
+				SWGPacket packet = PacketLookup.Find(swgReader.ReadByteArray(length));
 				childPackets.Add(packet);
 			}
 
 			this.ToArray();
 		}
+		#endregion
 
-		#region Packet Utility Methods
+		#region Public Methods
 		public byte[] ToArray()
 		{
 			// Create SOE Wrapper
@@ -73,6 +75,8 @@ namespace SWGProxy.Utilities
 			soeBuffer.AddRange(CalculateCRC(soeBuffer.ToArray()));
 			return soeBuffer.ToArray();
 		}
+		#endregion
+		#region Private Methods
 		private byte[] EncryptData(byte[] data)
 		{
 			List<byte> newData = new List<byte>();
