@@ -13,10 +13,12 @@ namespace SWGProxy.Utilities
 		#region Packet Header/Footer variables
 		private short SOEOpcode = 9;
 		private short Sequence = 0;
+		private short Multi = 0;
 		#endregion
 
 		private List<SWGPacket> childPackets = new List<SWGPacket>();
-		private bool xorModified = false;
+
+		public SOEPacket() { }
 
 		public SOEPacket(byte[] data)
 		{
@@ -25,7 +27,8 @@ namespace SWGProxy.Utilities
 
 			byte[] swgPacketBuffer = DecryptData(reader.ReadByteArray(data.Length - 4)); // - 4 b/c of (header + footer)
 			PacketReader swgReader = new PacketReader(swgPacketBuffer);
-			swgReader.Position += 4; // Skip swg packet header
+			Sequence = swgReader.ReadShort();
+			Multi = swgReader.ReadShort();
 
 			while (swgReader.CanSeek())
 			{
@@ -37,11 +40,8 @@ namespace SWGProxy.Utilities
 
 				childPackets.Add(packet);
 			}
-		}
 
-		public SOEPacket()
-		{
-			childPackets.Add(new GenericPacket(new byte[] { 0x00, 0x02, 0xAB, 0x43, 0xE3, 0xD5, 0x00, 0xFF, 0x00, 0x11, 0x45, 0x32, 0x76, 0x43, 0xD4, 0xF1, 0x00 }));
+			this.ToArray();
 		}
 
 		#region Packet Utility Methods
@@ -49,10 +49,14 @@ namespace SWGProxy.Utilities
 		{
 			// Create SOE Wrapper
 			List<byte> soeBuffer = new List<byte>();
-			soeBuffer.AddRange(BitConverter.GetBytes(SOEOpcode).Reverse());
+			soeBuffer.AddRange(BitConverter.GetBytes(SOEOpcode));
+
+			// Create SWG packet header
+			List<byte> swgPacketBuffer = new List<byte>();
+			swgPacketBuffer.AddRange(BitConverter.GetBytes(Sequence));
+			swgPacketBuffer.AddRange(BitConverter.GetBytes(Multi));
 
 			// Add SWG Packets
-			List<byte> swgPacketBuffer = new List<byte>();
 			foreach (SWGPacket packet in childPackets)
 			{
 				swgPacketBuffer.Add((byte)packet.ToArray().Length);
@@ -65,7 +69,6 @@ namespace SWGProxy.Utilities
 
 			// Append CRC to footer
 			soeBuffer.AddRange(CalculateCRC(soeBuffer.ToArray()));
-			
 			return soeBuffer.ToArray();
 		}
 		private byte[] EncryptData(byte[] data)

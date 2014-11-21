@@ -139,8 +139,6 @@ namespace SWGProxy.Utilities
 			int pos = 0;
 			int packets = 0;
 
-			Logger.PrintPacket(temp);
-
 			while(pos < temp.Length)
 			{
 				byte length = temp[pos++]; // read length and move onto operand

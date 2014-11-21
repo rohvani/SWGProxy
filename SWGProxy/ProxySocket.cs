@@ -78,12 +78,10 @@ namespace SWGProxy
 
 						case 9: // SOE_CHL_DATA_A
 							PacketStream packet = new PacketStream(localMsg.ToArray());
-							packet.xorData();
-							packet.AnalyzePacket();
-							byte[] temp = localMsg.ToArray();
-							SOEPacket aa = new SOEPacket(temp);
-							localMsg = packet.getFinalizedPacket();
-							Console.WriteLine("[Debug] Packet " + (temp.SequenceEqual(localMsg) ? "succesfully" : "unsuccessfully") + " rebuilt");
+							SOEPacket pct = new SOEPacket(localMsg.ToArray());
+							Console.WriteLine("[Debug] Packet " + (localMsg.SequenceEqual(pct.ToArray()) ? "succesfully" : "unsuccessfully") + " rebuilt");
+							localMsg = pct.ToArray();
+							//Console.WriteLine("[Debug] Packet " + (temp.SequenceEqual(localMsg) ? "succesfully" : "unsuccessfully") + " rebuilt");
 							break;
 
 						default:
