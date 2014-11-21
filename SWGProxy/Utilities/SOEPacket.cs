@@ -15,16 +15,17 @@ namespace SWGProxy.Utilities
 		private short Sequence = 0;
 		private short Multi = 0;
 		#endregion
-
 		private List<SWGPacket> childPackets = new List<SWGPacket>();
 
 		public SOEPacket() { }
 
 		public SOEPacket(byte[] data)
 		{
+			// Begin reading of SOE packet
 			PacketReader reader = new PacketReader(data);
 			SOEOpcode = reader.ReadShort();
 
+			// Setup SWG packet buffer and begin to read
 			byte[] swgPacketBuffer = DecryptData(reader.ReadByteArray(data.Length - 4)); // - 4 b/c of (header + footer)
 			PacketReader swgReader = new PacketReader(swgPacketBuffer);
 			Sequence = swgReader.ReadShort();

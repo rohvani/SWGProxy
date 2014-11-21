@@ -81,7 +81,6 @@ namespace SWGProxy
 							SOEPacket pct = new SOEPacket(localMsg.ToArray());
 							Console.WriteLine("[Debug] Packet " + (localMsg.SequenceEqual(pct.ToArray()) ? "succesfully" : "unsuccessfully") + " rebuilt");
 							localMsg = pct.ToArray();
-							//Console.WriteLine("[Debug] Packet " + (temp.SequenceEqual(localMsg) ? "succesfully" : "unsuccessfully") + " rebuilt");
 							break;
 
 						default:
