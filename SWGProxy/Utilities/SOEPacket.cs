@@ -14,6 +14,7 @@ namespace SWGProxy.Utilities
 		private short SOEOpcode = 9;
 		private short Sequence = 0;
 		private short Multi = 0;
+		private bool UseCompression = false;
 		#endregion
 		private List<SWGPacket> childPackets = new List<SWGPacket>();
 
@@ -63,7 +64,7 @@ namespace SWGProxy.Utilities
 				swgPacketBuffer.Add((byte)packet.ToArray().Length);
 				swgPacketBuffer.AddRange(packet.ToArray());
 			}
-			swgPacketBuffer.Add(0); // Compressed flag, 0 for uncompressed
+			swgPacketBuffer.Add((byte)(UseCompression ? 1 : 0));
 
 			// Encrypt SWG Packet Buffer and add to SOE Packet Buffer
 			soeBuffer.AddRange(EncryptData(swgPacketBuffer.ToArray()));

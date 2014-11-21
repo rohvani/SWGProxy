@@ -77,10 +77,9 @@ namespace SWGProxy
 							break;
 
 						case 9: // SOE_CHL_DATA_A
-							PacketStream packet = new PacketStream(localMsg.ToArray());
-							SOEPacket pct = new SOEPacket(localMsg.ToArray());
-							Console.WriteLine("[Debug] Packet " + (localMsg.SequenceEqual(pct.ToArray()) ? "succesfully" : "unsuccessfully") + " rebuilt");
-							localMsg = pct.ToArray();
+							SOEPacket packet = new SOEPacket(localMsg.ToArray());
+							Console.WriteLine("[Debug] Packet " + (localMsg.SequenceEqual(packet.ToArray()) ? "succesfully" : "unsuccessfully") + " rebuilt");
+							localMsg = packet.ToArray();
 							break;
 
 						default:
