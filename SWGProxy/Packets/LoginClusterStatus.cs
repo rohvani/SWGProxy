@@ -9,20 +9,22 @@ namespace SWGProxy.Packets
 {
 	public class LoginClusterStatus : SWGPacket
 	{
-		short operand = 0;
-		int opcode = 0;
+		short operandCount = 2;
+		int opcode = 0x3436AEB6;
 		List<GameServer> gameServers = new List<GameServer>();
 
-		public LoginClusterStatus()
-		{
-
-		}
+		public LoginClusterStatus() { }
 
 		public LoginClusterStatus(byte[] original)
 		{
+			// Initialize a reader for reading
 			PacketReader reader = new PacketReader(original);
-			operand = reader.ReadShort();
+
+			// Read SWG header
+			operandCount = reader.ReadShort();
 			opcode = reader.ReadInt();
+
+			// Read servers into gameserver list
 			int serverCount = reader.ReadInt();
 			for(int i = 0; i < serverCount; i++)
 			{
@@ -47,8 +49,9 @@ namespace SWGProxy.Packets
 			PacketWriter writer = new PacketWriter();
 
 			// Build packet
-			writer.writeShort(operand);
+			writer.writeShort(operandCount);
 			writer.writeInt(opcode);
+
 			writer.writeInt(gameServers.Count);
 			foreach(GameServer server in gameServers)
 			{
