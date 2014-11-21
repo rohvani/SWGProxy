@@ -81,6 +81,7 @@ namespace SWGProxy
 							packet.xorData();
 							packet.AnalyzePacket();
 							byte[] temp = localMsg.ToArray();
+							SOEPacket aa = new SOEPacket(temp);
 							localMsg = packet.getFinalizedPacket();
 							Console.WriteLine("[Debug] Packet " + (temp.SequenceEqual(localMsg) ? "succesfully" : "unsuccessfully") + " rebuilt");
 							break;

@@ -17,9 +17,21 @@ namespace SWGProxy.Utilities
 			this.Position = 0;
 		}
 
+		public bool CanSeek()
+		{
+			return Position < data.Count;
+		}
+
 		public byte ReadByte()
 		{
 			return data[Position++];
+		}
+
+		public byte[] ReadByteArray(int length)
+		{
+			byte[] array = new byte[length];
+			for (int i = 0; i < length; i++) array[i] = ReadByte();
+			return array;
 		}
 
 		public short ReadShort()

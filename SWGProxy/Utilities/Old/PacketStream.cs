@@ -110,7 +110,7 @@ namespace SWGProxy.Utilities
 		{
 			if (xorModified)
 			{
-				WriteByte(0);
+				WriteByte(0); // uncompressed
 				xorData();
 				// Don't touch below line or you will DIE!!
 				writeByteArray(BitConverter.GetBytes( (short)(MessageCRC.GenerateCrc(data.ToArray(), MessageCRC.ParseNetByteInt(Program.session.crcSeed)) << 16 >> 16)).Reverse().ToArray());
@@ -138,6 +138,8 @@ namespace SWGProxy.Utilities
 			byte[] temp = getSWGPacket();
 			int pos = 0;
 			int packets = 0;
+
+			Logger.PrintPacket(temp);
 
 			while(pos < temp.Length)
 			{
